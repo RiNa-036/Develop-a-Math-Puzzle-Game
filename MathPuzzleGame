@@ -1,0 +1,54 @@
+import java.io.*;
+import java.util.Scanner;
+
+public class MathPuzzleGame {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter your name: ");
+        String playerName = sc.nextLine();
+
+        System.out.print("Enter difficulty (easy/medium/hard): ");
+        String difficulty = sc.nextLine();
+
+        int score = 0;
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("questions.txt"));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                String question = parts[0];
+                int correctAnswer = Integer.parseInt(parts[1]);
+
+                System.out.print(question + " = ");
+                int userAnswer = sc.nextInt();
+
+                if (userAnswer == correctAnswer) {
+                    System.out.println("Correct!");
+                    score++;
+                } else {
+                    System.out.println("Wrong! Correct answer: " + correctAnswer);
+                }
+            }
+
+            br.close();
+
+            FileWriter fw = new FileWriter("scores.txt", true);
+            fw.write("Player: " + playerName + ", Difficulty: " + difficulty + ", Score: " + score + "\n");
+            fw.close();
+
+            System.out.println("\nGame Over!");
+            System.out.println("Your Score: " + score);
+            System.out.println("Score saved to scores.txt");
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        sc.close();
+    }
+}
